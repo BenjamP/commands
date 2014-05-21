@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <title>Commands Explainer</title>
+    <script src='http://www.w3.org/Tools/respec/respec-w3c-common' async class='remove'></script>
+    <script class='remove'>
+      var respecConfig = {
+              specStatus:   "unofficial"
+          ,   shortName:    "commands-explainer"
+          ,   editors:      [{     name: "Ben Peters", 
+                                mailto: "BenjamP@microsoft.com",
+                                company: "Microsoft", 
+                                companyURL: "http://www.microsoft.com" }]
+          ,   wg:           ""
+          ,   wgURI:        ""
+          ,   wgPublicList: "public-webapps"
+          ,   wgPatentURI:  "http://www.w3.org/2004/01/pp-impl/40318/status"
+          ,   edDraftURI:   ""
+          ,   license:      "cc-by"
+        };
+    </script>
+  </head>
+  <body>
+    <section id='abstract'>
+      <p>
+        This document is a non-normative reference, which provides an overview of CommandEvents and contenteditable=minimal. 
+        It summarizes the normative information in the respective specifications in easy-to-digest prose with illustrations.
+      </p>
+    </section>
+    <section id='sotd'>
+      <p>
+        
+      </p>
+    </section>
+    <section>
+      <h2>Introduction</h2>
+      <p>
+        ContentEditable is used extensively on the web to enable users to directly edit HTML content. 
+        However, it is very complex and its behavior is often largely overwritten by sites or javascript frameworks. 
+        Completely overwriting it is very difficult because it requires overwriting all keyboard shortcuts that perform commands like bold and undo, 
+        as well as the context menu. Further, this must be done in all supported languages. 
+        To simplify this, a new level of abstraction is described in the CommandEvent specification, 
+        which allows overwriting the behavior of a specific functionality.
+        </p>
+        <p>To further simplify the work for sites and frameworks that wish to provide functionality for the majority of commands directly, 
+        the Minimal ContentEditable specification disables all commands by default, including text input. 
+        This allows sites to easily provide their own implementations of commands as well as opt in to commands that they prefer the browser to handle.
+      </p>
+    </section>
+    <section>
+      <h2>Framing the Problem</h2>
+        <section>
+        <h3>Ways a User Indicates Their Intentions</h3>
+        <p>
+        There are several different ways users can indicate that they are trying to perform a given action. 
+        For instance, a user may press control-z (or command-z on Mac) on an English keyboard to indicate that they would like to undo the latest action in the current context. 
+        They may also use an undo item in a context menu for this. 
+        In other languages, the keyboard shortcut may vary. 
+        There may also be gestures for these intentions on various platforms, such as 'shake' on iOS. 
+        </p>
+        </section><section>
+        <h3>Default Handling of User Intentions</h3>
+        <p>
+        By default, browsers handle a large number of user intentions, like typing and formatting text in editable regions, clipboard operations, and selection.
+        Browser have the built-in capability to understand a user's intention based on their localized input.
+        </p>
+        </section><section>
+        <h3>Overriding Default Handling in Script</h3>
+        Today, it is very difficult for a website to detect a user's intention directly. 
+        Instead, they must infer it based on keyboard or pointer events. This input must be understood in a localized context. 
+        And in some cases, such as the browser's context menu, it can't be inferred at all because script is not made aware of these actions.  
+        </p>
+        </section>
+    </section>
+    <section>
+      <h2>User Intention Events</h2>
+        <section>
+        <h3>Clipboard Events</h3>
+        In order to assist in determining what a user intends, browsers already fire some events like Clipboard Events. 
+        </section><section>
+        <h3>Selection Events</h3>
+        </section><section>
+        <h3>CommandEvents</h3>
+        A user's intention to select content or execute commands (like those found on a toolbar) should be easily understandable by a website.
+        </section>
+    </section>
+    <section>
+      <h2>Minimal default handling</h2>
+        <p>
+        
+        </p>
+        <p>
+            <img src="images/intention_events_concept.png">
+        </p>
+    </section>
+    <section>
+      <h2>Acknowledgements</h2>
+      <p>
+        Many thanks to:
+      </p>
+      <p>
+        Ryosuke Niwa<br>
+        Julie Parent<br>
+        Robin Berjon<br>
+      </p>
+    </section>
+  </body>
+</html>
