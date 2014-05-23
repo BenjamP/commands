@@ -39,7 +39,20 @@
       </p>
     </section>
     <section>
-        <h2></h2>
+        <h2>CommandData</h2>
+        <dl title='interface CommandData' class='idl'>
+        <dt>attribute DOMString value</dt>
+        <dd>
+            The value used for executing a command
+        </dd>
+        </dl>
+		An update to <code>execCommand</code> will allow an alternative signature for this method, as follows:
+		<dl title='partial interface Document' class='idl'>
+        <dt>boolean execCommand (DOMString commandId, optional CommandData commandData)</dt>
+        <dd>
+            Invokes a command of type commandId with commandData as an argument.
+        </dd>
+        </dl>
     </section>
     <section>
       <h2>Acknowledgements</h2>
