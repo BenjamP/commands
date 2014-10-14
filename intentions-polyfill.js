@@ -8,12 +8,38 @@
 	// [Intention, modifier_key, keycode, event]
 	var uaSupportedIntentionNames = 
 	   [["selectall", "control", 65, "beforeSelectionChange"], 
-		["bold", "control", 66, "beforeInput"], 
-		["italic", "control", 73, "beforeInput"], 
-		["underline", "control", 85, "beforeInput"], 
+		["format", "control", 66, "beforeInput"], 
+		["format", "control", 73, "beforeInput"], 
+		["format", "control", 85, "beforeInput"], 
 		["undo", "control", 90, "beforeInput"], 
 		["redo", "control", 89, "beforeInput"],
-		["selectRight", "shift", 39, "beforeSelectionChange"]];	
+		["selectRight", "shift", 39, "beforeSelectionChange"],
+		["insertText", "none", 65, "beforeInput"],
+		["insertText", "none", 66, "beforeInput"],
+		["insertText", "none", 67, "beforeInput"],
+		["insertText", "none", 68, "beforeInput"],
+		["insertText", "none", 69, "beforeInput"],
+		["insertText", "none", 70, "beforeInput"],
+		["insertText", "none", 71, "beforeInput"],
+		["insertText", "none", 72, "beforeInput"],
+		["insertText", "none", 73, "beforeInput"],
+		["insertText", "none", 74, "beforeInput"],
+		["insertText", "none", 75, "beforeInput"],
+		["insertText", "none", 76, "beforeInput"],
+		["insertText", "none", 77, "beforeInput"],
+		["insertText", "none", 78, "beforeInput"],
+		["insertText", "none", 79, "beforeInput"],
+		["insertText", "none", 80, "beforeInput"],
+		["insertText", "none", 81, "beforeInput"],
+		["insertText", "none", 82, "beforeInput"],
+		["insertText", "none", 83, "beforeInput"],
+		["insertText", "none", 84, "beforeInput"],
+		["insertText", "none", 85, "beforeInput"],
+		["insertText", "none", 86, "beforeInput"],
+		["insertText", "none", 87, "beforeInput"],
+		["insertText", "none", 88, "beforeInput"],
+		["insertText", "none", 89, "beforeInput"],
+		["insertText", "none", 90, "beforeInput"]];	
 	uaSupportedIntentionNames.getIntentionDetails = 
 		function(name)
 		{
