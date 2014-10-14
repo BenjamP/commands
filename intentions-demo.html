@@ -6,17 +6,11 @@
 	<script type="text/javascript">
 		function setup(){
 			var editArea = document.getElementById("editArea");
-			//editArea.addEventListener("queryIntention", logQueryIntentionEvent);
-			editArea.addEventListener("intention", logIntentionEvent);
+			editArea.addEventListener("beforeSelectionChange", logIntentionEvent);
+			editArea.addEventListener("beforeInput", logIntentionEvent);
 		}
-		/*
-		function logQueryIntentionEvent(evt){
-			document.getElementById("log").textContent += evt.type + " event with intention=" + evt.detail.intention + " in edit area.\n";
-			document.getElementById("log").scrollTop = 99999;
-		}
-		*/
 		function logIntentionEvent(evt){
-			document.getElementById("log").textContent += evt.type + " event with intention=" + evt.detail.intention + " in edit area.\n";
+			document.getElementById("log").textContent += "event : { type : \"" + evt.type + "\", intention : \"" + evt.intention + "\"}\n";
 			document.getElementById("log").scrollTop = 99999;
 		}
 	</script>
@@ -26,5 +20,5 @@
 		<br />
 	</div>
 	<div>Log:</div>
-	<textarea id="log" style="width:400px;height:400px"></textarea>
+	<textarea id="log" style="width:600px;height:400px"></textarea>
 </body></html>

@@ -5,12 +5,27 @@
 
 (function(){
 	var IntentionEventsEnabled = false;
-	var uaSupportedIntentionNames = [["selectall", 65], ["bold", 66], ["italic", 73], ["underline", 85]];
-	/*
-	if (-1 != navigator.userAgent.toLowerCase().indexOf('trident')) {
-		uaSupportedIntentionNames = [["selectall", 65], ["bold", 66], ["italic", 73], ["underline", 85], ["copy", 67], ["cut", 88], ["paste", 86]];
-	}
-	*/
+	// [Intention, modifier_key, keycode, event]
+	var uaSupportedIntentionNames = 
+	   [["selectall", "control", 65, "beforeSelectionChange"], 
+		["bold", "control", 66, "beforeInput"], 
+		["italic", "control", 73, "beforeInput"], 
+		["underline", "control", 85, "beforeInput"], 
+		["undo", "control", 90, "beforeInput"], 
+		["redo", "control", 89, "beforeInput"],
+		["selectRight", "shift", 39, "beforeSelectionChange"]];	
+	uaSupportedIntentionNames.getIntentionDetails = 
+		function(name)
+		{
+			for (var i = 0; i < uaSupportedIntentionNames.length; i++)
+			{
+				if (uaSupportedIntentionNames[i][0] == name)
+				{
+					return uaSupportedIntentionNames[i];
+				}
+			}
+			return null;
+		};
 	
 	(function () {
 		function CustomEvent ( event, params ) {
@@ -28,68 +43,37 @@
 	//intententionEvents
 	if (document){
 		IntentionEventsEnabled = true;
-		/*
-		function IntententionQueryResult(){
-			this.isSupportedByUserAgent = false;
-			this.isSupported = false;
-			this.isEnabled = false;	
-		}
-		*/
 		document.declareIntention = 
 			function (name, arg){
 				console.info('declareIntention');
-				/*
-				var result = new IntententionQueryResult();
-				for (var i = 0; i < uaSupportedIntentionNames.length; i++)
+				var intentionDetails = uaSupportedIntentionNames.getIntentionDetails(name);
+				var intentionEvent;
+				if (null != intentionDetails)
 				{
-					if (uaSupportedIntentionNames[i][0] == name) {
-						//TODO: better logic
-						result.isSupportedByUserAgent = true;
-						result.isSupported = true;
-						result.isEnabled = true;
+					eventType = intentionDetails[3];
+					switch (eventType)
+					{
+					default:
+						intentionEvent = new CustomEvent(eventType, {"cancelable":true, "detail":{"intention":name}});
 					}
 				}
-				var queryIntententionEvent = new CustomEvent("queryintentention", {"detail":{"intention":name, "intententionResult":result}});
-				document.activeElement.dispatchEvent(queryintententionEvent);
-				if (result.isEnabled) {
-					var intentionEvent = new CustomEvent("intention", {"cancelable":true, "detail":{"intention":name, "intententionResult":result}});
-				*/	
-				var intentionEvent = new CustomEvent("intention", {"cancelable":true, "detail":{"intention":name}});
-				var canceled = !document.activeElement.dispatchEvent(intentionEvent);
-				if (!canceled) {
-					return document.execCommand(name, false, arg);
-				}
-				//}
-				return false;
+				return document.activeElement.dispatchEvent(intentionEvent);
 			};
 	}
-	/*
-	//TODO modify IntentionEvent instead of CustomEvent?
+	
 	if (Object.defineProperty && CustomEvent && CustomEvent.prototype) {
 		Object.defineProperty(CustomEvent.prototype, "intention",	
 			{ enumerable: true, configurable: true, 
 				get: function() {
 					var result = null; 
-					if (this.intention) { 
-						result = this.intention; 
+					if (this.detail.intention) { 
+						result = this.detail.intention; 
 					} 
 					return result; 
 				} 
 			});
-		
-		Object.defineProperty(CustomEvent.prototype, "intententionResult",	
-			{ enumerable: true, configurable: true, 
-				get: function() {
-					var result = null; 
-					if (this.detail && this.detail.intententionResult) { 
-						result = this.detail.intententionResult; 
-					} 
-					return result; 
-				} 
-			});
-		
 	}
-	*/
+	
 	//Post Page-Load Functionality
 	window.addEventListener(
 		'load',function (evt) {
@@ -97,18 +81,22 @@
 			if (IntentionEventsEnabled){
 				document.body.addEventListener(
 					"keydown",
-					function (evt){
-						if (evt.ctrlKey){
-							for (var i = 0; i < uaSupportedIntentionNames.length; i++)
+					function (evt)
+					{
+						for (var i = 0; i < uaSupportedIntentionNames.length; i++)
+						{
+							if ((uaSupportedIntentionNames[i][2] == evt.keyCode) &&
+								((uaSupportedIntentionNames[i][1] == "control") == evt.ctrlKey) &&
+								((uaSupportedIntentionNames[i][1] == "shift") == evt.shiftKey))
 							{
-								//.keyCode is deprecated, but Chrome doesn't support .key yet
-								if (uaSupportedIntentionNames[i][1] == evt.keyCode) {
-									document.declareIntention(uaSupportedIntentionNames[i][0]);
+								var cancelled = !document.declareIntention(uaSupportedIntentionNames[i][0]);
+								if (cancelled)
+								{
 									evt.preventDefault();
-									break;
 								}
+								break;
 							}
-						}	
+						}							
 					});
 			}
 		}
